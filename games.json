@@ -1,0 +1,201 @@
+[
+  {
+    "id": "english_free_1",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Word Matching",
+    "type": "matching",
+    "pairs": [
+      {"left": "Go", "right": "Kugenda"},
+      {"left": "Run", "right": "kwiruka"},
+      {"left": "Eat", "right": "Kurya"}
+    ]
+  },
+  {
+    "id": "english_free_2",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Memory Flip",
+    "type": "memory",
+    "cards": ["Apple", "Banana", "Orange", "Grape"]
+  },
+  {
+    "id": "english_free_3",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Drag & Drop",
+    "type": "dragdrop",
+    "categories": ["Fruits", "Animals"],
+    "items": [
+      {"text": "Apple", "category": "Fruits"},
+      {"text": "Banana", "category": "Fruits"},
+      {"text": "Cat", "category": "Animals"},
+      {"text": "Dog", "category": "Animals"}
+    ]
+  },
+  {
+    "id": "english_free_4",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - True / False",
+    "type": "truefalse",
+    "statements": [
+      {"text": "The sky is blue.", "answer": true},
+      {"text": "Cats can fly.", "answer": false}
+    ]
+  },
+  {
+    "id": "english_free_5",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Fill in the Blank",
+    "type": "fillblank",
+    "questions": [
+      {"question": "I ___ to school every day.", "answer": "go"},
+      {"question": "He ___ eating an apple.", "answer": "is"}
+    ]
+  },
+  {
+    "id": "swahili_free_1",
+    "course": "swahili",
+    "mode": "free-mode",
+    "title": "Swahili Free Mode - Word Matching",
+    "type": "matching",
+    "pairs": [
+      {"left": "Ninaenda", "right": "I go"},
+      {"left": "Anaenda", "right": "He/She goes"},
+      {"left": "Tafadhali", "right": "Please"}
+    ]
+  },
+  {
+    "id": "english_week1_1",
+    "course": "english",
+    "mode": "self-paced",
+    "week": "week1",
+    "title": "English Week 1 - Memory Flip",
+    "type": "memory",
+    "cards": ["Apple", "Banana", "Orange", "Grape"]
+  },
+  {
+    "id": "english_week1_2",
+    "course": "english",
+    "mode": "self-paced",
+    "week": "week1",
+    "title": "English Week 1 - Drag & Drop",
+    "type": "dragdrop",
+    "categories": ["Fruits", "Animals"],
+    "items": [
+      {"text": "Apple", "category": "Fruits"},
+      {"text": "Banana", "category": "Fruits"},
+      {"text": "Cat", "category": "Animals"},
+      {"text": "Dog", "category": "Animals"}
+    ]
+  },
+  {
+    "id": "english_week2_1",
+    "course": "english",
+    "mode": "self-paced",
+    "week": "week2",
+    "title": "English Week 2 - Typing Practice",
+    "type": "typing",
+    "words": ["Hello", "World", "Student", "Learn"]
+  },
+  {
+    "id": "swahili_week1_1",
+    "course": "swahili",
+    "mode": "self-paced",
+    "week": "week1",
+    "title": "Swahili Week 1 - Memory Flip",
+    "type": "memory",
+    "cards": ["Shule", "Kitabu", "Kalamu", "Meza"]
+  },
+  {
+    "id": "swahili_week1_2",
+    "course": "swahili",
+    "mode": "self-paced",
+    "week": "week1",
+    "title": "Swahili Week 1 - Drag & Drop",
+    "type": "dragdrop",
+    "categories": ["Fruits", "Animals"],
+    "items": [
+      {"text": "Tunda", "category": "Fruits"},
+      {"text": "Ndizi", "category": "Fruits"},
+      {"text": "Paka", "category": "Animals"},
+      {"text": "Mbwa", "category": "Animals"}
+    ]
+  },
+  {
+    "id": "swahili_week2_1",
+    "course": "swahili",
+    "mode": "self-paced",
+    "week": "week2",
+    "title": "Swahili Week 2 - Typing Practice",
+    "type": "typing",
+    "words": ["Habari", "Asante", "Ndiyo", "Sawa"]
+  },
+  {
+    "id": "english_week2_2",
+    "course": "english",
+    "mode": "self-paced",
+    "week": "week2",
+    "title": "English Week 2 - Fill in the Blank",
+    "type": "fillblank",
+    "questions": [
+      {"question": "I ___ programming every day.", "answer": "practice"},
+      {"question": "She ___ reading a book.", "answer": "is"}
+    ]
+  },
+  {
+    "id": "swahili_week2_2",
+    "course": "swahili",
+    "mode": "self-paced",
+    "week": "week2",
+    "title": "Swahili Week 2 - True / False",
+    "type": "truefalse",
+    "statements": [
+      {"text": "Jua linawaka mchana.", "answer": true},
+      {"text": "Samahani inaenda mbali.", "answer": false}
+    ]
+  },
+   {
+    "id": "english_free_4",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Fill in the Blank",
+    "type": "fillblank",
+    "sentences": [
+      {"sentence": "I ___ to school every day.", "answer": "go"},
+      {"sentence": "She ___ a book.", "answer": "reads"}
+    ]
+  },
+  {
+    "id": "english_free_5",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - True / False",
+    "type": "truefalse",
+    "statements": [
+      {"statement": "The sky is blue.", "answer": true},
+      {"statement": "Cats can fly.", "answer": false}
+    ]
+  },
+  {
+    "id": "english_free_6",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Flashcards",
+    "type": "flashcards",
+    "cards": [
+      {"front": "Apple", "back": "A fruit that is red or green"},
+      {"front": "Dog", "back": "A common household pet"}
+    ]
+  },
+  {
+    "id": "english_free_7",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Hangman",
+    "type": "hangman",
+    "words": ["Hello", "World", "Student", "Learn"]
+  }
+]

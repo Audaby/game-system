@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Games</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 10px; }
+button { display: block; width: 100%; padding: 10px; font-size: 16px; margin-top: 10px; border: none; border-radius: 5px; cursor: pointer; color: white; }
+#retry { background-color: #2196F3; }
+#back { background-color: #f39c12; }
+#game-container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid green;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+li { cursor: pointer; margin: 8px 0; color: #007bff; }
+.draggable-item { display: inline-block; padding: 5px; border: 1px solid #000; margin: 3px; cursor: grab; }
+.category { min-height: 50px; border: 1px solid #ccc; padding: 10px; margin: 5px; }
+.memory-card { display: inline-block; width: 80px; height: 80px; border: 1px solid #000; margin: 5px; text-align: center; line-height: 80px; font-weight: bold; cursor: pointer; background-color: #e0e0e0; }
+</style>
+</head>
+<body>
+<div id="game-container">
+    <h2>Select a Course</h2>
+    <ul id="course-list"></ul>
+</div>
+
+<script>
+// Load games from JSON
+fetch("games.json")
+.then(res => res.json())
+.then(data => {
+    const container = document.getElementById("game-container");
+
+    function saveScore(gameId, score) {
+        localStorage.setItem(`gameScore_${gameId}`, score);
+    }
+
+    function getScore(gameId) {
+        return parseInt(localStorage.getItem(`gameScore_${gameId}`) || 0);
+    }
+
+    function showCourses() {
+        const courses = [...new Set(data.map(g => g.course))];
+        container.innerHTML = "<h2>Select a Course</h2><ul id='course-list'></ul>";
+        const courseList = document.getElementById("course-list");
+        courses.forEach(course => {
+            const li = document.createElement("li");
+            li.textContent = course.charAt(0).toUpperCase() + course.slice(1);
+            li.addEventListener("click", () => showGames(course));
+            courseList.appendChild(li);
+        });
+    }
+
+    function showGames(course) {
+        const courseGames = data.filter(g => g.course === course);
+        container.innerHTML = `<h2>${course.charAt(0).toUpperCase() + course.slice(1)} Games</h2>
+                               <ul id="game-list"></ul>
+                               <button id="back">Back to Courses</button>`;
+        const list = document.getElementById("game-list");
+        courseGames.forEach(game => {
+            const li = document.createElement("li");
+            li.textContent = game.title;
+            li.addEventListener("click", () => loadGame(game));
+            list.appendChild(li);
+        });
+        document.getElementById("back").addEventListener("click", showCourses);
+    }
+
+    function loadGame(game) {
+        container.innerHTML = `<h2>${game.title}</h2>
+                               <div id="game-board"></div>
+                               <div id="result"></div>
+                               <button id="retry">Retry</button>
+                               <button id="back">Back to Games</button>`;
+        const board = document.getElementById("game-board");
+        const result = document.getElementById("result");
+        const retry = document.getElementById("retry");
+        const back = document.getElementById("back");
+
+        back.addEventListener("click", () => showGames(game.course));
+        retry.addEventListener("click", () => loadGame(game));
+
+        if(game.type === "matching") {
+            let score = 0;
+            game.pairs.forEach((pair, idx) => {
+                const div = document.createElement("div");
+                div.innerHTML = `<b>${pair.left}</b> → <input type="text" id="match_${idx}" placeholder="Translate"/>
+                                 <span id="feedback_${idx}"></span>`;
+                board.appendChild(div);
+
+                const input = document.getElementById(`match_${idx}`);
+                const feedback = document.getElementById(`feedback_${idx}`);
+                input.addEventListener("input", () => {
+                    if(input.value.trim().toLowerCase() === pair.right.toLowerCase()) {
+                        feedback.textContent = "✔ Correct!";
+                        feedback.style.color = "green";
+                        input.disabled = true;
+                        score++;
+                        saveScore(game.id, score);
+                        result.textContent = `Score: ${score} / ${game.pairs.length}`;
+                    } else {
+                        feedback.textContent = "✘ Try again";
+                        feedback.style.color = "red";
+                    }
+                });
+            });
+        }
+
+        if(game.type === "memory") {
+            const cards = [...game.cards, ...game.cards];
+            cards.sort(() => Math.random() - 0.5);
+            let first = null;
+            let lock = false;
+            let matches = 0;
+            cards.forEach((text, idx) => {
+                const card = document.createElement("div");
+                card.className = "memory-card";
+                card.dataset.text = text;
+                card.dataset.index = idx;
+                card.textContent = "?";
+                card.style.display = "inline-block";
+                card.style.margin = "5px";
+                card.style.padding = "10px";
+                card.style.border = "1px solid #333";
+                card.style.cursor = "pointer";
+                card.addEventListener("click", () => {
+                    if(lock || card.textContent !== "?") return;
+                    card.textContent = text;
+                    if(!first) first = card;
+                    else {
+                        if(first.dataset.text === card.dataset.text){
+                            matches++;
+                            first.style.backgroundColor = "#8bc34a";
+                            card.style.backgroundColor = "#8bc34a";
+                            first = null;
+                            saveScore(game.id, matches);
+                            result.textContent = `Score: ${matches}`;
+                        } else {
+                            lock = true;
+                            setTimeout(() => { 
+                                first.textContent = "?"; 
+                                card.textContent = "?"; 
+                                first = null; 
+                                lock=false; 
+                            }, 1000);
+                        }
+                    }
+                });
+                board.appendChild(card);
+            });
+        }
+
+        if(game.type === "dragdrop") {
+            const categoriesDivs = {};
+            game.categories.forEach(cat => {
+                const div = document.createElement("div");
+                div.className = "category";
+                div.textContent = cat;
+                div.dataset.category = cat;
+                div.style.minHeight = "50px";
+                div.style.border = "1px solid #333";
+                div.style.padding = "5px";
+                div.style.margin = "5px";
+                div.addEventListener("dragover", e => e.preventDefault());
+                div.addEventListener("drop", e => {
+                    const id = e.dataTransfer.getData("text");
+                    const item = document.getElementById(id);
+                    if(item.dataset.category === cat){
+                        item.style.backgroundColor = "#8bc34a";
+                        item.draggable = false;
+                        saveScore(game.id, parseInt(getScore(game.id))+1);
+                        result.textContent = `Score: ${getScore(game.id)}`;
+                    } else {
+                        item.style.backgroundColor = "#f44336";
+                        setTimeout(() => { item.style.backgroundColor = ""; }, 800);
+                    }
+                    e.target.appendChild(item);
+                });
+                board.appendChild(div);
+                categoriesDivs[cat] = div;
+            });
+            game.items.forEach((it, idx) => {
+                const item = document.createElement("div");
+                item.id = `drag_${idx}`;
+                item.className = "draggable-item";
+                item.textContent = it.text;
+                item.dataset.category = it.category;
+                item.style.display = "inline-block";
+                item.style.margin = "5px";
+                item.style.padding = "5px";
+                item.style.border = "1px solid #333";
+                item.style.cursor = "move";
+                item.draggable = true;
+                item.addEventListener("dragstart", e => e.dataTransfer.setData("text", item.id));
+                board.appendChild(item);
+            });
+            result.textContent = `Score: ${getScore(game.id)}`;
+        }
+
+        if(game.type === "typing") {
+            let score = 0;
+            game.words.forEach(word => {
+                const div = document.createElement("div");
+                div.innerHTML = `<p>Type this word: <b>${word}</b></p>
+                                 <input type="text" id="input_${word}"/>
+                                 <span id="feedback_${word}"></span>`;
+                board.appendChild(div);
+                const input = document.getElementById(`input_${word}`);
+                const feedback = document.getElementById(`feedback_${word}`);
+                input.addEventListener("input", () => {
+                    if(input.value.trim().toLowerCase() === word.toLowerCase()){
+                        feedback.textContent = "✔ Correct!";
+                        feedback.style.color = "green";
+                        input.disabled = true;
+                        score++;
+                        saveScore(game.id, score);
+                        result.textContent = `Score: ${score} / ${game.words.length}`;
+                    } else {
+                        feedback.textContent = "✘ Try again";
+                        feedback.style.color = "red";
+                    }
+                });
+            });
+        }
+    }
+
+    showCourses();
+});
+</script>
+
+</body>
+</html>
