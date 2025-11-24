@@ -56,6 +56,33 @@
     ]
   },
   {
+    "id": "english_free_6",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Flashcards",
+    "type": "flashcards",
+    "cards": [
+      {"front": "Apple", "back": "A fruit that is red or green"},
+      {"front": "Dog", "back": "A common household pet"}
+    ]
+  },
+  {
+    "id": "english_free_7",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Hangman",
+    "type": "hangman",
+    "words": ["Hello", "World", "Student", "Learn"]
+  },
+   {
+    "id": "english_free_6",
+    "course": "english",
+    "mode": "free-mode",
+    "title": "English Free Mode - Typing Practice",
+    "type": "typing",
+    "words": ["Hello", "World", "Student", "Learn"]
+  },
+  {
     "id": "swahili_free_1",
     "course": "swahili",
     "mode": "free-mode",
@@ -90,15 +117,6 @@
       {"text": "Cat", "category": "Animals"},
       {"text": "Dog", "category": "Animals"}
     ]
-  },
-  {
-    "id": "english_week2_1",
-    "course": "english",
-    "mode": "self-paced",
-    "week": "week2",
-    "title": "English Week 2 - Typing Practice",
-    "type": "typing",
-    "words": ["Hello", "World", "Student", "Learn"]
   },
   {
     "id": "swahili_week1_1",
@@ -156,46 +174,6 @@
       {"text": "Jua linawaka mchana.", "answer": true},
       {"text": "Samahani inaenda mbali.", "answer": false}
     ]
-  },
-   {
-    "id": "english_free_4",
-    "course": "english",
-    "mode": "free-mode",
-    "title": "English Free Mode - Fill in the Blank",
-    "type": "fillblank",
-    "sentences": [
-      {"sentence": "I ___ to school every day.", "answer": "go"},
-      {"sentence": "She ___ a book.", "answer": "reads"}
-    ]
-  },
-  {
-    "id": "english_free_5",
-    "course": "english",
-    "mode": "free-mode",
-    "title": "English Free Mode - True / False",
-    "type": "truefalse",
-    "statements": [
-      {"statement": "The sky is blue.", "answer": true},
-      {"statement": "Cats can fly.", "answer": false}
-    ]
-  },
-  {
-    "id": "english_free_6",
-    "course": "english",
-    "mode": "free-mode",
-    "title": "English Free Mode - Flashcards",
-    "type": "flashcards",
-    "cards": [
-      {"front": "Apple", "back": "A fruit that is red or green"},
-      {"front": "Dog", "back": "A common household pet"}
-    ]
-  },
-  {
-    "id": "english_free_7",
-    "course": "english",
-    "mode": "free-mode",
-    "title": "English Free Mode - Hangman",
-    "type": "hangman",
-    "words": ["Hello", "World", "Student", "Learn"]
   }
+   
 ]
