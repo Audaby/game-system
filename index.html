@@ -29,6 +29,7 @@ li { cursor: pointer; margin: 8px 0; color: #007bff; }
     <ul id="course-list"></ul>
 </div>
 
+
 <script>
 // Load games from JSON
 fetch("games.json")
@@ -201,6 +202,113 @@ fetch("games.json")
             });
             result.textContent = `Score: ${getScore(game.id)}`;
         }
+        if(game.type === "flashcards") {
+            let current = 0;
+            const cardDiv = document.createElement("div");
+            const front = document.createElement("p");
+            const flipBtn = document.createElement("button");
+            flipBtn.textContent = "Flip";
+            const nextBtn = document.createElement("button");
+            nextBtn.textContent = "Next";
+
+            function showCard(idx) {
+                front.textContent = game.cards[idx].front;
+                cardDiv.appendChild(front);
+                cardDiv.appendChild(flipBtn);
+                cardDiv.appendChild(nextBtn);
+            }
+
+            flipBtn.addEventListener("click", () => {
+                front.textContent = game.cards[current].back;
+            });
+            nextBtn.addEventListener("click", () => {
+                current++;
+                if(current >= game.cards.length) current = 0;
+                showCard(current);
+            });
+
+            board.appendChild(cardDiv);
+            showCard(current);
+        }
+        if(game.type === "hangman") {
+            const word = game.words[Math.floor(Math.random() * game.words.length)].toLowerCase();
+            let guessed = Array(word.length).fill("_");
+            const div = document.createElement("div");
+            const input = document.createElement("input");
+            input.maxLength = 1;
+            const btn = document.createElement("button");
+            btn.textContent = "Guess";
+            const feedback = document.createElement("div");
+            div.innerHTML = `<p id="hangman_word">${guessed.join(" ")}</p>`;
+            div.appendChild(input);
+            div.appendChild(btn);
+            div.appendChild(feedback);
+            board.appendChild(div);
+
+            btn.addEventListener("click", () => {
+                const letter = input.value.toLowerCase();
+                input.value = "";
+                if(!letter.match(/[a-z]/)) return;
+                let correct = false;
+                for(let i=0;i<word.length;i++){
+                    if(word[i]===letter){ guessed[i]=letter; correct=true; }
+                }
+                document.getElementById("hangman_word").textContent = guessed.join(" ");
+                if(!correct){ feedback.innerHTML = `<span style="color:red;">Wrong guess!</span>`; }
+                else{ feedback.innerHTML = `<span style="color:green;">Correct!</span>`; score++; }
+                saveScore(game.id, score);
+                if(!guessed.includes("_")){
+                    feedback.innerHTML = `<span style="color:green;">You completed the word!</span>`;
+                }
+            });
+        }
+         function showFeedback(msg, correct=true) {
+            const p = document.createElement("p");
+            p.innerHTML = correct ? `✔ ${msg}` : `✘ ${msg}`;
+            p.style.color = correct ? "green" : "red";
+            result.appendChild(p);
+        }
+        if(game.type === "truefalse") {
+            let score = 0;
+            game.statements.forEach((st, idx) => {
+                const div = document.createElement("div");
+                div.innerHTML = `<p>${st.text}</p>
+                                 <button id="true_${idx}">True</button>
+                                 <button id="false_${idx}">False</button>`;
+                board.appendChild(div);
+                document.getElementById(`true_${idx}`).addEventListener("click", () => {
+                    if(st.answer === true) { score++; showFeedback(`Correct: "${st.text}"`); }
+                    else showFeedback(`Wrong: "${st.text}"`, false);
+                    saveScore(game.id, score);
+                });
+                document.getElementById(`false_${idx}`).addEventListener("click", () => {
+                    if(st.answer === false) { score++; showFeedback(`Correct: "${st.text}"`); }
+                    else showFeedback(`Wrong: "${st.text}"`, false);
+                    saveScore(game.id, score);
+                });
+            });
+        }
+        if(game.type === "fillblank") {
+            let score = 0;
+            game.questions.forEach((q, idx) => {
+                const div = document.createElement("div");
+                div.innerHTML = `<p>${q.question}</p>
+                                 <input type="text" id="blank_${idx}"/>
+                                 <button id="check_${idx}">Check</button>`;
+                board.appendChild(div);
+                document.getElementById(`check_${idx}`).addEventListener("click", () => {
+                    const val = document.getElementById(`blank_${idx}`).value.trim();
+                    if(val.toLowerCase() === q.answer.toLowerCase()){
+                        score++;
+                        showFeedback(`Correct: "${q.question.replace("___", val)}"`);
+                        saveScore(game.id, score);
+                    } else showFeedback(`Wrong: "${q.question}" (Correct: ${q.answer})`, false);
+                });
+            });
+        }
+
+        
+
 
         if(game.type === "typing") {
             let score = 0;
@@ -232,6 +340,7 @@ fetch("games.json")
     showCourses();
 });
 </script>
+
 
 </body>
 </html>
